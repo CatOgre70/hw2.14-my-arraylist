@@ -2,6 +2,10 @@ package pro.sky;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import pro.sky.exceptions.ElementNotFoundInTheArrayListException;
+import pro.sky.exceptions.NullArgumentException;
+import pro.sky.exceptions.WrongArraySizeException;
+import pro.sky.exceptions.WrongIndexException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -57,9 +61,9 @@ public class MainTest {
 
     @Test
     public void testAddWithIndexOnException(){
-        assertThrows(IndexOutOfBoundsException.class, () -> test.add(-1, TEST_STRING_1));
-        assertThrows(IndexOutOfBoundsException.class, () -> test.add(test.size(), TEST_STRING_1));
-        assertThrows(IndexOutOfBoundsException.class, () -> test.add(test.size() + 100, TEST_STRING_1));
+        assertThrows(WrongIndexException.class, () -> test.add(-1, TEST_STRING_1));
+        assertThrows(WrongIndexException.class, () -> test.add(test.size(), TEST_STRING_1));
+        assertThrows(WrongIndexException.class, () -> test.add(test.size() + 100, TEST_STRING_1));
     }
 
     // Установить элемент
@@ -81,9 +85,9 @@ public class MainTest {
 
     @Test
     public void testSetWithIndexOnException(){
-        assertThrows(IndexOutOfBoundsException.class, () -> test.set(-1, TEST_STRING_1));
-        assertThrows(IndexOutOfBoundsException.class, () -> test.set(test.size(), TEST_STRING_1));
-        assertThrows(IndexOutOfBoundsException.class, () -> test.set(test.size() + 100, TEST_STRING_1));
+        assertThrows(WrongIndexException.class, () -> test.set(-1, TEST_STRING_1));
+        assertThrows(WrongIndexException.class, () -> test.set(test.size(), TEST_STRING_1));
+        assertThrows(WrongIndexException.class, () -> test.set(test.size() + 100, TEST_STRING_1));
     }
 
     // Удаление элемента.
@@ -102,7 +106,7 @@ public class MainTest {
 
     @Test
     public void testRemoveOnException(){
-        assertThrows(RuntimeException.class, () -> test.remove(TEST_STRING_1));
+        assertThrows(ElementNotFoundInTheArrayListException.class, () -> test.remove(TEST_STRING_1));
     }
 
     // Удаление элемента по индексу.
@@ -121,9 +125,9 @@ public class MainTest {
 
     @Test
     public void testRemoveByIndexOnException(){
-        assertThrows(RuntimeException.class, () -> test.remove(16));
-        assertThrows(RuntimeException.class, () -> test.remove(-1));
-        assertThrows(RuntimeException.class, () -> test.remove(test.size()));
+        assertThrows(WrongIndexException.class, () -> test.remove(16));
+        assertThrows(WrongIndexException.class, () -> test.remove(-1));
+        assertThrows(WrongIndexException.class, () -> test.remove(test.size()));
     }
 
     // Проверка на существование элемента.
@@ -175,9 +179,9 @@ public class MainTest {
 
     @Test
     public void testGetOnException(){
-        assertThrows(IndexOutOfBoundsException.class, () -> test.get(-1));
-        assertThrows(IndexOutOfBoundsException.class, () -> test.get(test.size()));
-        assertThrows(IndexOutOfBoundsException.class, () -> test.get(test.size()+100));
+        assertThrows(WrongIndexException.class, () -> test.get(-1));
+        assertThrows(WrongIndexException.class, () -> test.get(test.size()));
+        assertThrows(WrongIndexException.class, () -> test.get(test.size()+100));
     }
 
     // Сравнить текущий список с другим.
@@ -201,7 +205,7 @@ public class MainTest {
 
     @Test
     public void testEqualsOnException(){
-        assertThrows(NullPointerException.class, () -> test.equals(null));
+        assertThrows(NullArgumentException.class, () -> test.equals(null));
     }
 
     // Вернуть фактическое количество элементов.
@@ -261,4 +265,11 @@ public class MainTest {
         }
         assertTrue(isArraysEquals);
     }
+
+    @Test
+    public void testToArrayOnWrongArraySizeException(){
+        String[] result = new String[test.size()+1];
+        assertThrows(WrongArraySizeException.class, () -> test.toArray(result));
+    }
+
 }

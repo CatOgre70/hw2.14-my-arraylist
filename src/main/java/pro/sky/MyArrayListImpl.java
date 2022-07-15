@@ -1,5 +1,7 @@
 package pro.sky;
 
+import pro.sky.exceptions.*;
+
 import java.util.Arrays;
 
 public class MyArrayListImpl<T> implements MyArrayList<T>{
@@ -27,14 +29,14 @@ public class MyArrayListImpl<T> implements MyArrayList<T>{
             this.array = new Object[DEFAULT_SIZE];
             this.size = 0;
         } else
-            throw new IllegalArgumentException("Illegal MyArrayList class constructor argument size = " + size);
+            throw new IllegalArrayListSizeException("Illegal MyArrayList class constructor argument size = " + size);
 
     }
 
     @Override
     public T add(T item) {
         if(item == null)
-            throw new NullPointerException("Illegal MyArrayList class add() method argument item = null");
+            throw new NullArgumentException("Illegal MyArrayList class add() method argument item = null");
         if (this.size == this.array.length) {
             this.increaseArraySize(DEFAULT_SIZE);
         }
@@ -46,9 +48,9 @@ public class MyArrayListImpl<T> implements MyArrayList<T>{
     @Override
     public T add(int index, T item) {
         if(item == null)
-            throw new NullPointerException("Illegal MyArrayList class add() method argument item = null");
+            throw new NullArgumentException("Illegal MyArrayList class add() method argument item = null");
         if(index < 0 || index >= size)
-            throw new IndexOutOfBoundsException("Illegal MyArrayList class add() method argument index = " + index);
+            throw new WrongIndexException("Illegal MyArrayList class add() method argument index = " + index);
         if(size == array.length)
             increaseArraySize(DEFAULT_SIZE);
         for(int i = size-1; i >= index; i--)
@@ -62,9 +64,9 @@ public class MyArrayListImpl<T> implements MyArrayList<T>{
     @Override
     public T set(int index, T item) {
         if(item == null)
-            throw new NullPointerException("Illegal MyArrayList class set() method argument item = null");
+            throw new NullArgumentException("Illegal MyArrayList class set() method argument item = null");
         if(index < 0 || index >= size)
-            throw new IndexOutOfBoundsException("Illegal MyArrayList class set() method argument index = " + index);
+            throw new WrongIndexException("Illegal MyArrayList class set() method argument index = " + index);
         array[index] = item;
         return (T)array[index];
     }
@@ -73,14 +75,14 @@ public class MyArrayListImpl<T> implements MyArrayList<T>{
     public T remove(T item) {
         int index = this.indexOf(item);
         if(index == -1)
-            throw new RuntimeException("Such item is not found in the MyArrayList by remove() method");
+            throw new ElementNotFoundInTheArrayListException("Such item is not found in the MyArrayList by remove() method");
         return this.remove(index);
     }
 
     @Override
     public T remove(int index) {
         if(index < 0 || index >= size)
-            throw new IndexOutOfBoundsException("Illegal MyArrayList class remove() method argument index = " + index);
+            throw new WrongIndexException("Illegal MyArrayList class remove() method argument index = " + index);
         Object item = array[index];
         for(int i = index; i < size-1; i++){
             array[i] = array[i+1];
@@ -101,7 +103,7 @@ public class MyArrayListImpl<T> implements MyArrayList<T>{
     @Override
     public int indexOf(T item) {
         if(item == null)
-            throw new NullPointerException("Illegal argument in MyArrayList method indexOf() item = null");
+            throw new NullArgumentException("Illegal argument in MyArrayList method indexOf() item = null");
         for(int i = 0; i < size; i++){
             T arrayElement = (T) this.array[i];
             if(item.equals(arrayElement))
@@ -122,14 +124,14 @@ public class MyArrayListImpl<T> implements MyArrayList<T>{
     @Override
     public T get(int index) {
         if(index < 0 || index >= size)
-            throw new IndexOutOfBoundsException("Illegal MyArrayList class remove() method argument index = " + index);
+            throw new WrongIndexException("Illegal MyArrayList class remove() method argument index = " + index);
         return (T)array[index];
     }
 
     @Override
     public boolean equals(MyArrayList otherList) {
         if(otherList == null)
-            throw new NullPointerException("Illegal MyArrayList method equals() argument otherList = null");
+            throw new NullArgumentException("Illegal MyArrayList method equals() argument otherList = null");
         if(otherList.size() != this.size())
             return false;
         boolean isEquals = true;
@@ -162,7 +164,7 @@ public class MyArrayListImpl<T> implements MyArrayList<T>{
     @Override
     public <T> T[] toArray(T[] a) {
         if(a.length != size)
-            throw new RuntimeException("Array a in MyArrayList.toArray() method should be the same size as MyArrayList. size()");
+            throw new WrongArraySizeException("Array a in MyArrayList.toArray() method should be the same size as MyArrayList. size()");
         return (T[]) Arrays.copyOf(array, size, a.getClass());
     }
 
@@ -180,6 +182,5 @@ public class MyArrayListImpl<T> implements MyArrayList<T>{
         str.append("]}");
         return str.toString();
     }
-
 
 }
