@@ -3,12 +3,21 @@ package pro.sky;
 import pro.sky.exceptions.*;
 
 import java.util.Arrays;
+import java.util.List;
 
-public class MyArrayListImpl<T> implements MyArrayList<T>{
+public class MyArrayListImpl<T extends Comparable <T>> implements MyArrayList<T> {
 
     private static final int DEFAULT_SIZE = 10;
     private Object[] array;
     int size;
+
+    public MyArrayListImpl(List<T> listOfObjects) {
+        array = new Object[listOfObjects.size()];
+        for(int i = 0; i < listOfObjects.size(); i++) {
+            array[i] = listOfObjects.get(i);
+        }
+        size = listOfObjects.size();
+    }
 
     private void increaseArraySize(int increment){
         Object[] newArray = new Object[size + increment];
@@ -101,6 +110,32 @@ public class MyArrayListImpl<T> implements MyArrayList<T>{
     }
 
     @Override
+    public boolean containsByBinarySearch(T item) {
+        MyArrayList<T> newArray = new MyArrayListImpl<T>();
+        for (int i = 0; i < size; i++) {
+            newArray.add((T)array[i]);
+        }
+        this.sortByChoosingMin(newArray);
+        int min = 0;
+        int max = newArray.size() - 1;
+
+        while (min <= max) {
+            int mid = (min + max) / 2;
+
+            if (item.compareTo(newArray.get(mid)) == 0) {
+                return true;
+            }
+
+            if (item.compareTo(newArray.get(mid)) < 0)  {
+                max = mid - 1;
+            } else {
+                min = mid + 1;
+            }
+        }
+        return false;
+    }
+
+    @Override
     public int indexOf(T item) {
         if(item == null)
             throw new NullArgumentException("Illegal argument in MyArrayList method indexOf() item = null");
@@ -166,6 +201,23 @@ public class MyArrayListImpl<T> implements MyArrayList<T>{
         if(a.length != size)
             throw new WrongArraySizeException("Array a in MyArrayList.toArray() method should be the same size as MyArrayList. size()");
         return (T[]) Arrays.copyOf(array, size, a.getClass());
+    }
+
+    @Override
+    public void sortByChoosingMin(MyArrayList<T> array) {
+        for (int i = 0; i < array.size(); i++) {
+            T minCurrent = (T) array.get(i); // First element of the current array is the start minimum
+            int indexMinCurrent = i; // Index of minimum element
+            for(int j = i; j < array.size(); j++) {
+                if (minCurrent.compareTo(array.get(j)) > 0) {
+                    minCurrent = (T) array.get(j);
+                    indexMinCurrent = j;
+                }
+            }
+            T temp = array.get(i);
+            array.set(i, array.get(indexMinCurrent));
+            array.set(indexMinCurrent, temp);
+        }
     }
 
     @Override

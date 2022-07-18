@@ -2,10 +2,9 @@ package pro.sky;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import pro.sky.exceptions.ElementNotFoundInTheArrayListException;
-import pro.sky.exceptions.NullArgumentException;
-import pro.sky.exceptions.WrongArraySizeException;
-import pro.sky.exceptions.WrongIndexException;
+import pro.sky.exceptions.*;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -270,6 +269,20 @@ public class MainTest {
     public void testToArrayOnWrongArraySizeException(){
         String[] result = new String[test.size()+1];
         assertThrows(WrongArraySizeException.class, () -> test.toArray(result));
+    }
+
+    @Test
+    public void testSortByChoosingMethod(){
+        MyArrayList<Integer> expected = new MyArrayListImpl<>(List.of(2, 5, 15, 35, 60, 81, 123, 216));
+        MyArrayList<Integer> result = new MyArrayListImpl<>(List.of(123, 15, 5, 216, 2, 60, 81, 35));
+        result.sortByChoosingMin(result);
+        assertTrue(expected.equals(result));
+    }
+
+    @Test
+    public void testContainsByBinarySearch(){
+        MyArrayList<Integer> intTest = new MyArrayListImpl<>(List.of(123, 15, 5, 216, 2, 60, 81, 35));
+        assertTrue(intTest.containsByBinarySearch(216));
     }
 
 }

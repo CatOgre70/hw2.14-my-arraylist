@@ -1,6 +1,6 @@
 package pro.sky;
 
-public interface MyArrayList<T> {
+public interface MyArrayList<T extends Comparable<T>> {
 
     // Добавление элемента.
     // Вернуть добавленный элемент
@@ -41,6 +41,8 @@ public interface MyArrayList<T> {
     // Вернуть true/false;
     boolean contains(T item);
 
+    boolean containsByBinarySearch(T item);
+
     // Поиск элемента.
     // Вернуть индекс элемента
     // или -1 в случае отсутствия.
@@ -79,5 +81,7 @@ public interface MyArrayList<T> {
     Object[] toArray();
 
     <T> T[] toArray(T[] a);
+
+    void sortByChoosingMin(MyArrayList<T> array);
 
 }

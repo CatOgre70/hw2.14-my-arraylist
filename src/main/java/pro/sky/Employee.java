@@ -2,7 +2,7 @@ package pro.sky;
 
 import java.util.Objects;
 
-public class Employee {
+public class Employee implements Comparable<Employee>{
 
     private final String firstName;
     private final String middleName;
@@ -66,5 +66,12 @@ public class Employee {
                 ", department=" + department +
                 ", salary=" + salary +
                 '}';
+    }
+
+    @Override
+    public int compareTo(Employee o) {
+        String str = getLastName() + getFirstName() + getMiddleName();
+        String str1 = o.getLastName() + o.getFirstName() + getMiddleName();
+        return str.compareTo(str1);
     }
 }

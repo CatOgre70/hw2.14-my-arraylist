@@ -1,7 +1,12 @@
 package pro.sky;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 public class Main {
     public static void main(String[] args) {
+
 
         // String MyArrayList tests
         MyArrayList<String> test = new MyArrayListImpl<>();
@@ -87,5 +92,76 @@ public class Main {
         System.out.println("test2.contains(e1) = " + test2.contains(e1));
         System.out.println("test2.isEmpty() = " + test2.isEmpty());
 
+        // Homework 2.15 Sort
+
+        // Generate random array of 100 000 integers
+        final int MIN_NUMBER = -100_000;
+        final int MAX_NUMBER = 100_000;
+        MyArrayList<Integer> intArray = new MyArrayListImpl<>(100_000);
+
+        generateNewRandomArray(intArray, MIN_NUMBER, MAX_NUMBER);
+        System.out.println("intArray.size() = " + intArray.size());
+        // Bubble sort method
+        long start = System.currentTimeMillis();
+        sortByBubble(intArray);
+        printFirst10ElementsOfArray(intArray);
+        System.out.println("Время работы пузырькового метода сортировки: " + (System.currentTimeMillis()-start));
+
+        // Sort by choosing min
+        generateNewRandomArray(intArray, MIN_NUMBER, MAX_NUMBER);
+        System.out.println("intArray.size() = " + intArray.size());
+        start = System.currentTimeMillis();
+        intArray.sortByChoosingMin(intArray);
+        printFirst10ElementsOfArray(intArray);
+        System.out.println("Время работы метода сортировки выбором минимального элемента: " + (System.currentTimeMillis()-start));
+
+        // Sort by inserting method
+        generateNewRandomArray(intArray, MIN_NUMBER, MAX_NUMBER);
+        System.out.println("intArray.size() = " + intArray.size());
+        start = System.currentTimeMillis();
+        sortByInserting(intArray);
+        printFirst10ElementsOfArray(intArray);
+        System.out.println("Время работы метода сортировки вставкой: " + (System.currentTimeMillis()-start));
+
     }
+
+    public static void generateNewRandomArray(MyArrayList<Integer> array, int minNumber, int maxNumber){
+        array.clear();
+        for (int i = 0; i < 100_000; i++) {
+            array.add((int) ((Math.random() * (maxNumber - minNumber)) + minNumber));
+        }
+    }
+
+    public static void printFirst10ElementsOfArray(MyArrayList array){
+        int elementsNumber = Math.min(array.size(), 10);
+        System.out.print("Первые " + elementsNumber + " элементов массива: [ ");
+        for(int i = 0; i < elementsNumber - 1; i++){
+            System.out.print(array.get(i) + ", ");
+        }
+        System.out.println(array.get(elementsNumber - 1) + " ]");
+    }
+
+    public static void sortByBubble(MyArrayList<Integer> array){
+        for (int i = 0; i < array.size() - 1 ; i++) {
+            for(int j = 0; j < array.size() - 1 - i; j++)
+                if(array.get(j) > array.get(j+1)) {
+                    int temp = array.get(j+1);
+                    array.set(j+1, array.get(j));
+                    array.set(j, temp);
+                }
+        }
+    }
+
+    public static void sortByInserting(MyArrayList<Integer> array){
+        for (int i = 1; i < array.size(); i++) {
+            int temp = array.get(i);
+            int j = i;
+            while (j > 0 && array.get(j - 1) >= temp) {
+                array.set(j, array.get(j - 1));
+                j--;
+            }
+            array.set(j, temp);
+        }
+    }
+
 }
