@@ -78,7 +78,6 @@ public interface MyArrayList<T extends Comparable<T>> {
     // Создать новый массив
     // из строк в списке
     // и вернуть его.
-    Object[] toArray();
 
     <T> T[] toArray(T[] a);
 

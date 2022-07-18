@@ -111,7 +111,7 @@ public class MyArrayListImpl<T extends Comparable <T>> implements MyArrayList<T>
 
     @Override
     public boolean containsByBinarySearch(T item) {
-        MyArrayList<T> newArray = new MyArrayListImpl<T>();
+        MyArrayList<T> newArray = new MyArrayListImpl<>();
         for (int i = 0; i < size; i++) {
             newArray.add((T)array[i]);
         }
@@ -189,11 +189,6 @@ public class MyArrayListImpl<T extends Comparable <T>> implements MyArrayList<T>
     @Override
     public void clear() {
         size = 0;
-    }
-
-    @Override
-    public Object[] toArray() {
-        return Arrays.copyOf(array, size);
     }
 
     @Override
