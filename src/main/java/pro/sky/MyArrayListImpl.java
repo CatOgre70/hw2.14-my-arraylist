@@ -216,6 +216,28 @@ public class MyArrayListImpl<T extends Comparable <T>> implements MyArrayList<T>
     }
 
     @Override
+    public void quickSortByRecursion(MyArrayList<T> array, int begin, int end){
+        if(begin < end) {
+            T pivot = array.get(end);
+            int i = begin - 1;
+            for(int j = begin; j < end; j++){
+                if(array.get(j).compareTo(pivot) <= 0){
+                    i++;
+                    T temp = array.get(i);
+                    array.set(i, array.get(j));
+                    array.set(j, temp);
+                }
+            }
+            T temp = array.get(i + 1);
+            array.set(i + 1, array.get(end));
+            array.set(end, temp);
+            int partitionIndex = i + 1;
+            quickSortByRecursion(array, begin, partitionIndex - 1);
+            quickSortByRecursion(array, partitionIndex + 1, end);
+        }
+    }
+
+    @Override
     public String toString() {
         StringBuilder str = new StringBuilder();
         str.append("MyArrayListImpl{size=");

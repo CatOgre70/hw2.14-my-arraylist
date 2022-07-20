@@ -83,4 +83,5 @@ public interface MyArrayList<T extends Comparable<T>> {
 
     void sortByChoosingMin(MyArrayList<T> array);
 
+    void quickSortByRecursion(MyArrayList<T> array, int begin, int end);
 }

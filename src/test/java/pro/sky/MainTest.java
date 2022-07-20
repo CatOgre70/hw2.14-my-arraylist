@@ -285,4 +285,12 @@ public class MainTest {
         assertTrue(intTest.containsByBinarySearch(216));
     }
 
+    @Test
+    public void testQuickSortByRecursion(){
+        MyArrayList<Integer> expected = new MyArrayListImpl<>(List.of(2, 5, 15, 35, 60, 81, 123, 216));
+        MyArrayList<Integer> result = new MyArrayListImpl<>(List.of(123, 15, 5, 216, 2, 60, 81, 35));
+        result.quickSortByRecursion(result, 0, result.size() - 1);
+        assertTrue(expected.equals(result));
+    }
+
 }
